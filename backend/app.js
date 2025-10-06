@@ -11,7 +11,22 @@ const app = express();
 
 // middleware
 app.use(express.json());
-app.use(cors());
+
+// CORS configuration - allows your frontend domains
+const corsOptions = {
+  origin: process.env.CORS_ORIGINS 
+    ? process.env.CORS_ORIGINS.split(',')
+    : [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        // Add your production domains in Coolify environment variables
+        // CORS_ORIGINS=https://app.yourdomain.com,https://admin.yourdomain.com
+      ],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 // routes
 app.use('/api/auth', authRouter);
